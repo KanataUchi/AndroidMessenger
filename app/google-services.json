@@ -1,0 +1,30 @@
+{
+  "project_info": {
+    "project_number": "774070515212",
+    "firebase_url": "https://androidmessenger-a217d-default-rtdb.europe-west1.firebasedatabase.app",
+    "project_id": "androidmessenger-a217d",
+    "storage_bucket": "androidmessenger-a217d.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:774070515212:android:9cd6530f772c9e8d0e6029",
+        "android_client_info": {
+          "package_name": "sleep.kontora.androidmessenger"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCC4McqE6XoikeQ5CHyn06yr_b8gj32LMY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

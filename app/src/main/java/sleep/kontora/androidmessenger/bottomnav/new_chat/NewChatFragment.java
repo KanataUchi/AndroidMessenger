@@ -18,6 +18,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 import sleep.kontora.androidmessenger.databinding.FragmentChatsBinding;
 import sleep.kontora.androidmessenger.databinding.FragmentNewChatBinding;
@@ -47,13 +48,14 @@ public class NewChatFragment extends Fragment {
 
 
                 for (DataSnapshot userSnapshot : snapshot.getChildren()) {
-                    if(userSnapshot.getKey().equals(FirebaseAuth.getInstance().getCurrentUser().getUid())){
+                    if(Objects.equals(userSnapshot.getKey(), Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid())){
                         continue;
                     }
 
-                    String username = userSnapshot.child("username").getValue().toString();
+                    String uid = userSnapshot.getKey();
+                    String username = Objects.requireNonNull(userSnapshot.child("username").getValue()).toString();
 
-                    users.add(new User(username));
+                    users.add(new User(uid ,username));
                 }
 
                 binding.usersRv.setLayoutManager(new LinearLayoutManager(getContext()));

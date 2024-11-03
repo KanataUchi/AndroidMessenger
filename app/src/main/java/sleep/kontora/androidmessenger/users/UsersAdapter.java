@@ -7,9 +7,14 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.firebase.auth.FirebaseAuth;
+
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Objects;
 
 import sleep.kontora.androidmessenger.R;
+import sleep.kontora.androidmessenger.utils.ChatUtil;
 
 public class UsersAdapter extends RecyclerView.Adapter<UserViewHolder> {
 
@@ -28,11 +33,22 @@ public class UsersAdapter extends RecyclerView.Adapter<UserViewHolder> {
 
     @Override
     public void onBindViewHolder(@NonNull UserViewHolder holder, int position) {
-        holder.username_tv.setText(users.get(position).username);
+        User user = users.get(position);
+
+        holder.username_tv.setText(user.getUsername());
+
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ChatUtil.createChat(user);
+            }
+        });
     }
 
     @Override
     public int getItemCount() {
         return users.size();
     }
+
+
 }

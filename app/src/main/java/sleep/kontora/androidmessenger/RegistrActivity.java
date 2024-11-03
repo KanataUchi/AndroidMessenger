@@ -51,12 +51,14 @@ public class RegistrActivity extends AppCompatActivity {
                                 public void onComplete(@NonNull Task<AuthResult> task) {
                                     if(task.isSuccessful()){
                                         HashMap<String, String> userInfo = new HashMap<>();
+                                        userInfo.put("chats", "");
                                         userInfo.put("email", binding.emailEt.getText().toString());
                                         userInfo.put("username", binding.usernameEt.getText().toString());
                                         userInfo.put("password", binding.passwordEt.getText().toString());
 
                                         FirebaseDatabase.getInstance().getReference().child("Users").child(FirebaseAuth.getInstance().getCurrentUser().getUid())
                                                 .setValue(userInfo);
+                                        FirebaseDatabase.getInstance().getReference().child("Chats");
                                         startActivity(new Intent(RegistrActivity.this, MainActivity.class));
                                     }
                                 }

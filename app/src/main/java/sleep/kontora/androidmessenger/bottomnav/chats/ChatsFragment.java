@@ -33,6 +33,9 @@ public class ChatsFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         binding = FragmentChatsBinding.inflate(inflater, container, false);
+
+        loadChats();
+
         return binding.getRoot();
     }
 
@@ -46,27 +49,28 @@ public class ChatsFragment extends Fragment {
                 String chatsStr = Objects.requireNonNull(snapshot.child("Users").child(uid).child("chats").getValue()).toString();
 
                 String[] chatsId = chatsStr.split(",");
+                if(!chatsStr.isEmpty()) {
+                    for (String chatId : chatsId) {
+                        DataSnapshot chatSnapshot = snapshot.child("Chats").child(chatId);
 
-                for(String chatId: chatsId){
-                    DataSnapshot chatSnapshot = snapshot.child("Chats").child(chatId);
+                        String userId1 = Objects.requireNonNull(chatSnapshot.child("user1").getValue()).toString();
+                        String userId2 = Objects.requireNonNull(chatSnapshot.child("user2").getValue()).toString();
 
-                    String userId1 = Objects.requireNonNull(chatSnapshot.child("user1").getValue()).toString();
-                    String userId2 = Objects.requireNonNull(chatSnapshot.child("user2").getValue()).toString();
+                        String chatUserId;
+                        if (uid.equals(userId1)) {
+                            chatUserId = userId2;
+                        } else {
+                            chatUserId = userId1;
+                        }
+                        String chat_name = Objects.requireNonNull(snapshot.child("Users").child(chatUserId).child("username").getValue()).toString();
 
-                    String chatUserId;
-                    if(uid.equals(userId1)){
-                        chatUserId = userId2;
-                    }else{
-                        chatUserId = userId1;
+                        Chat chat = new Chat(chat_name, chatId, userId1, userId2);
+                        chats.add(chat);
                     }
-                    String chat_name = Objects.requireNonNull(snapshot.child("Users").child(chatUserId).child("username").getValue()).toString();
-
-                    Chat chat = new Chat(chatId, chat_name, userId1, userId2);
-                    chats.add(chat);
                 }
+                    binding.chatsRv.setLayoutManager(new LinearLayoutManager(getContext()));
+                    binding.chatsRv.setAdapter(new ChatsAdapter(chats));
 
-                binding.chatsRv.setLayoutManager(new LinearLayoutManager(getContext()));
-                binding.chatsRv.setAdapter(new ChatsAdapter(chats));
             }
 
             @Override

@@ -49,22 +49,23 @@ public class ChatUtil {
                             if(!chats.isEmpty()) {
                                 String[] str1 = chats.split(",");
                                 for (int i = 0; i < str1.length; i++) {
-                                    if (chats.equals(str1[i])) {
+                                    if (chatId.equals(str1[i])) {
                                         isRetry = true;
                                     }
                                 }
                             }
 
-                            String chatsUpd;
+                                String chatsUpd;
 
-                            if(!isRetry) {
-                                chatsUpd = addIdToStr(chats, chatId);
-                            }else{
-                                chatsUpd = chats;
-                            }
+                                if (!isRetry) {
+                                    chatsUpd = addIdToStr(chats, chatId);
+                                } else {
+                                    chatsUpd = chats;
+                                }
 
-                            FirebaseDatabase.getInstance().getReference().child("Users").child(uid)
-                                    .child("chats").setValue(chatsUpd);
+                                FirebaseDatabase.getInstance().getReference().child("Users").child(uid)
+                                        .child("chats").setValue(chatsUpd);
+                            
                         }
                     }
                 });

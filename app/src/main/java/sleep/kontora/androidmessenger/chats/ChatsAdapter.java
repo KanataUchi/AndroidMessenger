@@ -1,5 +1,7 @@
 package sleep.kontora.androidmessenger.chats;
 
+import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,6 +11,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
 
+import sleep.kontora.androidmessenger.ChatActivity;
 import sleep.kontora.androidmessenger.R;
 
 public class ChatsAdapter extends RecyclerView.Adapter<ChatViewHolder> {
@@ -28,8 +31,17 @@ public class ChatsAdapter extends RecyclerView.Adapter<ChatViewHolder> {
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ChatViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull ChatViewHolder holder, @SuppressLint("RecyclerView") int position) {
         holder.chat_name_tv.setText(chats.get(position).getChat_name());
+
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(holder.itemView.getContext(), ChatActivity.class);
+                intent.putExtra("chatId", chats.get(position).getChat_id());
+                holder.itemView.getContext().startActivity(intent);
+            }
+        });
     }
 
     @Override

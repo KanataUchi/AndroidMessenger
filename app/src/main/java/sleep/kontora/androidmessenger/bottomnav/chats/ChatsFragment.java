@@ -9,6 +9,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -68,8 +69,9 @@ public class ChatsFragment extends Fragment {
                         chats.add(chat);
                     }
                 }
-                    binding.chatsRv.setLayoutManager(new LinearLayoutManager(getContext()));
-                    binding.chatsRv.setAdapter(new ChatsAdapter(chats));
+                binding.chatsRv.setLayoutManager(new LinearLayoutManager(getContext()));
+                binding.chatsRv.addItemDecoration(new DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL));
+                binding.chatsRv.setAdapter(new ChatsAdapter(chats));
 
             }
 

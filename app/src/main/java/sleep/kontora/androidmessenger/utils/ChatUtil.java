@@ -26,8 +26,8 @@ public class ChatUtil {
         FirebaseDatabase.getInstance().getReference().child("Chats").child(chatId)
                 .setValue(chatInfo);
 
-        addChatIdToUser(uid, chatId);
-        addChatIdToUser(user.getUid(), chatId);
+        addChatIdToUser(uid, chatId, user.getUid());
+        addChatIdToUser(user.getUid(), chatId, uid);
     }
 
     private static String generateChatId(String userId1, String userId2){
@@ -37,7 +37,7 @@ public class ChatUtil {
         return new String(charArray);
     }
 
-    private static void addChatIdToUser(String uid, String chatId){
+    private static void addChatIdToUser(String uid, String chatId, String companionId){
         FirebaseDatabase.getInstance().getReference().child("Users").child(uid)
                 .child("chats").get()
                 .addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
@@ -65,6 +65,7 @@ public class ChatUtil {
 
                                 FirebaseDatabase.getInstance().getReference().child("Users").child(uid)
                                         .child("chats").setValue(chatsUpd);
+
                             
                         }
                     }

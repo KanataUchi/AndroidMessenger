@@ -38,7 +38,7 @@ public class NewChatFragment extends Fragment {
         return binding.getRoot();
     }
 
-    private void loadUsers(){
+    public void loadUsers(){
 
         ArrayList<User> users = new ArrayList<>();
 
@@ -46,16 +46,36 @@ public class NewChatFragment extends Fragment {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
 
-
                 for (DataSnapshot userSnapshot : snapshot.getChildren()) {
+                    boolean isRetry = true;
                     if(Objects.equals(userSnapshot.getKey(), Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid())){
                         continue;
                     }
 
-                    String uid = userSnapshot.getKey();
-                    String username = Objects.requireNonNull(userSnapshot.child("username").getValue()).toString();
+                    String[] chatId1 = snapshot.child(Objects.requireNonNull(userSnapshot.getKey()))
+                            .child("chats").getValue().toString().split(",");
 
-                    users.add(new User(uid ,username));
+                    String[] chatId2 = snapshot.child(FirebaseAuth.getInstance().getCurrentUser().getUid())
+                            .child("chats").getValue().toString().split(",");
+
+                    for(int i = 0; i < chatId2.length; i++){
+                        for(int j = 0; j < chatId1.length; j++){
+                            if (chatId2[i].equals(chatId1[j])){
+                                isRetry = false;
+                                break;
+                            }
+                        }
+                        if(!isRetry)
+                            break;
+                    }
+
+                    if(isRetry) {
+                        String uid = userSnapshot.getKey();
+                        String username = Objects.requireNonNull(userSnapshot.child("username").getValue()).toString();
+
+
+                        users.add(new User(uid, username));
+                    }
                 }
 
                 binding.usersRv.setLayoutManager(new LinearLayoutManager(getContext()));

@@ -1,10 +1,14 @@
 package sleep.kontora.androidmessenger.users;
 
+import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -13,7 +17,12 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Objects;
 
+import sleep.kontora.androidmessenger.ChatActivity;
+import sleep.kontora.androidmessenger.MainActivity;
 import sleep.kontora.androidmessenger.R;
+import sleep.kontora.androidmessenger.bottomnav.chats.ChatsFragment;
+import sleep.kontora.androidmessenger.bottomnav.new_chat.NewChatFragment;
+import sleep.kontora.androidmessenger.chats.Chat;
 import sleep.kontora.androidmessenger.utils.ChatUtil;
 
 public class UsersAdapter extends RecyclerView.Adapter<UserViewHolder> {
@@ -40,7 +49,25 @@ public class UsersAdapter extends RecyclerView.Adapter<UserViewHolder> {
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ChatUtil.createChat(user);
+                    AlertDialog.Builder builder = new AlertDialog.Builder(v.getContext());
+                    builder.setTitle("")
+                            .setMessage("Do you want add this person in package chats?")
+                            .setCancelable(false)
+                            .setPositiveButton("yeah", new DialogInterface.OnClickListener(){
+                                @Override
+                                public void onClick(DialogInterface dialogInterface, int i){
+                                    ChatUtil.createChat(user);
+                                }
+                            })
+                            .setNegativeButton("no", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    dialog.cancel();
+
+                                }
+                            });
+                    AlertDialog dialog = builder.create();
+                    dialog.show();
             }
         });
     }
@@ -49,6 +76,5 @@ public class UsersAdapter extends RecyclerView.Adapter<UserViewHolder> {
     public int getItemCount() {
         return users.size();
     }
-
 
 }

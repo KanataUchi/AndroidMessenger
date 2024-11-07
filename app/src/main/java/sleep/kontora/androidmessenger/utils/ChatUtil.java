@@ -16,7 +16,7 @@ import sleep.kontora.androidmessenger.users.User;
 
 public class ChatUtil {
 
-    public static void createChat(User user){
+    public static String createChat(User user){
         String uid = Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid();
         HashMap<String, String> chatInfo = new HashMap<>();
         chatInfo.put("user1", uid);
@@ -28,6 +28,8 @@ public class ChatUtil {
 
         addChatIdToUser(uid, chatId, user.getUid());
         addChatIdToUser(user.getUid(), chatId, uid);
+
+        return  chatId;
     }
 
     private static String generateChatId(String userId1, String userId2){

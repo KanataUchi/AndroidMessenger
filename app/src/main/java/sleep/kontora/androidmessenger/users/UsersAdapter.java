@@ -9,6 +9,8 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -51,19 +53,22 @@ public class UsersAdapter extends RecyclerView.Adapter<UserViewHolder> {
             public void onClick(View v) {
                     AlertDialog.Builder builder = new AlertDialog.Builder(v.getContext());
                     builder.setTitle("")
-                            .setMessage("Do you want add this person in package chats?")
+                            .setMessage("Do you want start chat with this person?")
                             .setCancelable(false)
                             .setPositiveButton("yeah", new DialogInterface.OnClickListener(){
                                 @Override
                                 public void onClick(DialogInterface dialogInterface, int i){
-                                    ChatUtil.createChat(user);
+                                    String chatId = ChatUtil.createChat(user);
+
+                                    Intent intent = new Intent(holder.itemView.getContext(), ChatActivity.class);
+                                    intent.putExtra("chatId", chatId);
+                                    holder.itemView.getContext().startActivity(intent);
                                 }
                             })
                             .setNegativeButton("no", new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
                                     dialog.cancel();
-
                                 }
                             });
                     AlertDialog dialog = builder.create();

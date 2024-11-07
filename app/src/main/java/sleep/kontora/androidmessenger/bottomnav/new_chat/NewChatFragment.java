@@ -20,6 +20,8 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.Objects;
 
+import sleep.kontora.androidmessenger.R;
+import sleep.kontora.androidmessenger.bottomnav.chats.ChatsFragment;
 import sleep.kontora.androidmessenger.databinding.FragmentChatsBinding;
 import sleep.kontora.androidmessenger.databinding.FragmentNewChatBinding;
 import sleep.kontora.androidmessenger.users.User;

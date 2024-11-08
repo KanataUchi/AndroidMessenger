@@ -19,6 +19,7 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.Objects;
 
 import sleep.kontora.androidmessenger.LoginActivity;
+import sleep.kontora.androidmessenger.SettingActivity;
 import sleep.kontora.androidmessenger.databinding.FragmentProfileBinding;
 
 public class ProfileFragment extends Fragment {
@@ -31,12 +32,10 @@ public class ProfileFragment extends Fragment {
 
         loadUsername();
 
-        binding.logoutBtn.setOnClickListener(new View.OnClickListener() {
+        binding.settingBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                FirebaseAuth.getInstance().signOut();
-
-                startActivity(new Intent(getContext(), LoginActivity.class));
+                startActivity(new Intent(getContext(), SettingActivity.class));
             }
         });
 

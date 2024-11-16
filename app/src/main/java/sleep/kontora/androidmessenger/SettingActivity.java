@@ -1,20 +1,15 @@
 package sleep.kontora.androidmessenger;
 
-import static java.security.AccessController.getContext;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 
-import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 
 import com.google.firebase.auth.FirebaseAuth;
 
-import sleep.kontora.androidmessenger.databinding.ActivityRegistrBinding;
 import sleep.kontora.androidmessenger.databinding.ActivitySettingBinding;
 
 public class SettingActivity extends AppCompatActivity {
@@ -35,5 +30,27 @@ public class SettingActivity extends AppCompatActivity {
                 startActivity(new Intent(SettingActivity.this , LoginActivity.class));
             }
         });
+
+        binding.backBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(SettingActivity.this, MainActivity.class));
+            }
+        });
+
+        binding.egitNameBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                EditNicknameFragment editNicknameFragment = new EditNicknameFragment();
+                changeFragment(editNicknameFragment);
+            }
+        });
+
+    }
+
+    private void changeFragment(Fragment fragment){
+        FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+        fragmentTransaction.replace(R.id.change_field, fragment);
+        fragmentTransaction.commit();
     }
 }

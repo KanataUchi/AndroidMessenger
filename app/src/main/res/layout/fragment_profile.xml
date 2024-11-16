@@ -4,8 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context=".bottomnav.profile.ProfileFragment"
-    android:background="@color/white">
+    tools:context=".bottomnav.profile.ProfileFragment">
 
 
     <TextView
@@ -38,7 +37,7 @@
         android:layout_width="50dp"
         android:layout_height="50dp"
         android:src="@drawable/baseline_settings_24"
-        android:background="@color/white"
+        android:background="@android:color/transparent"
         android:layout_marginTop="80dp"
         android:layout_marginEnd="30dp"
         tools:layout_editor_absoluteX="326dp"

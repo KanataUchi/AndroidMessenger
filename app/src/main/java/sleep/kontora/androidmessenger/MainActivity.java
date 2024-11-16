@@ -28,7 +28,6 @@ public class MainActivity extends AppCompatActivity {
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-
         if(FirebaseAuth.getInstance().getCurrentUser() == null){
             startActivity(new Intent(this, LoginActivity.class));
         }

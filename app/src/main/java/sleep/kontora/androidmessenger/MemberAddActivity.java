@@ -1,20 +1,13 @@
-package sleep.kontora.androidmessenger.bottomnav.chats;
+package sleep.kontora.androidmessenger;
 
-import android.content.Intent;
 import android.os.Bundle;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -24,29 +17,22 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.Objects;
 
-import sleep.kontora.androidmessenger.MemberAddActivity;
 import sleep.kontora.androidmessenger.chats.Chat;
 import sleep.kontora.androidmessenger.chats.ChatsAdapter;
-import sleep.kontora.androidmessenger.databinding.FragmentChatsBinding;
+import sleep.kontora.androidmessenger.databinding.ActivityMemberAddBinding;
+import sleep.kontora.androidmessenger.groups.AddMembersAdapter;
 
-public class ChatsFragment extends Fragment {
-    private FragmentChatsBinding binding;
+public class MemberAddActivity extends AppCompatActivity {
 
-    @Nullable
+    private ActivityMemberAddBinding binding;
+
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        binding = FragmentChatsBinding.inflate(inflater, container, false);
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        binding = ActivityMemberAddBinding.inflate(getLayoutInflater());
+        setContentView(binding.getRoot());
 
         loadChats();
-
-        binding.addGroupIb.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(getContext(), MemberAddActivity.class));
-            }
-        });
-
-        return binding.getRoot();
     }
 
     private void loadChats(){
@@ -78,17 +64,16 @@ public class ChatsFragment extends Fragment {
                         chats.add(chat);
                     }
                 }
-                binding.chatsRv.setLayoutManager(new LinearLayoutManager(getContext()));
-                binding.chatsRv.addItemDecoration(new DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL));
-                binding.chatsRv.setAdapter(new ChatsAdapter(chats));
+                binding.membersRv.setLayoutManager(new LinearLayoutManager(getBaseContext()));
+                binding.membersRv.addItemDecoration(new DividerItemDecoration(getBaseContext(), DividerItemDecoration.VERTICAL));
+                binding.membersRv.setAdapter(new AddMembersAdapter(chats));
 
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-                Toast.makeText(getContext(), "Failed to user chats", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getBaseContext(), "Failed to user chats", Toast.LENGTH_SHORT).show();
             }
         });
     }
-
 }

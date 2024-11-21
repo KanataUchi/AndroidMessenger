@@ -59,6 +59,7 @@ public class RegistrActivity extends AppCompatActivity {
                                         FirebaseDatabase.getInstance().getReference().child("Users").child(FirebaseAuth.getInstance().getCurrentUser().getUid())
                                                 .setValue(userInfo);
                                         FirebaseDatabase.getInstance().getReference().child("Chats");
+                                        FirebaseDatabase.getInstance().getReference().child("Groups");
                                         startActivity(new Intent(RegistrActivity.this, MainActivity.class));
                                     }
                                 }

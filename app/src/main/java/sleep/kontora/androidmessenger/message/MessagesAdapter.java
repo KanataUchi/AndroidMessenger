@@ -10,13 +10,15 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.firebase.auth.FirebaseAuth;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
 import sleep.kontora.androidmessenger.R;
+import sleep.kontora.androidmessenger.users.User;
 
 public class MessagesAdapter extends RecyclerView.Adapter<MessagesAdapter.MessageViewHolder>{
-
+    static ArrayList<User> members;
     private List<Message> messages;
 
     public MessagesAdapter(List<Message> messages) {

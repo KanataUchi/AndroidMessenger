@@ -1,6 +1,9 @@
 package sleep.kontora.androidmessenger;
 
 import android.app.Activity;
+import android.app.Notification;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -10,6 +13,7 @@ import androidx.activity.EdgeToEdge;
 import androidx.annotation.AnimatorRes;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.NotificationCompat;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
@@ -105,6 +109,21 @@ public class ChatActivity extends AppCompatActivity {
 
         FirebaseDatabase.getInstance().getReference().child("Chats").child(chatId)
                 .child("messages").push().setValue(messageInfo);
+
+        NotificationChannel notificationChannel = null;
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+            notificationChannel = new NotificationChannel(
+                    "NotificationChannel",
+                    "send",
+                    NotificationManager.IMPORTANCE_DEFAULT);
+            NotificationManager notificationManager = getSystemService(NotificationManager.class);
+            notificationManager.createNotificationChannel(notificationChannel);
+
+            Notification notification = new NotificationCompat.Builder(this, "NotificationChannel")
+                    .setContentText(message)
+                    .build();
+        }
+
     }
 
     private void loadMessages(String chatId){

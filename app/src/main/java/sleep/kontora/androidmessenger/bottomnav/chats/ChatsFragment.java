@@ -13,8 +13,6 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -24,7 +22,6 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.Objects;
 
-import sleep.kontora.androidmessenger.MemberAddActivity;
 import sleep.kontora.androidmessenger.chats.Chat;
 import sleep.kontora.androidmessenger.chats.ChatsAdapter;
 import sleep.kontora.androidmessenger.databinding.FragmentChatsBinding;
@@ -38,13 +35,6 @@ public class ChatsFragment extends Fragment {
         binding = FragmentChatsBinding.inflate(inflater, container, false);
 
         loadChats();
-
-        binding.addGroupIb.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(getContext(), MemberAddActivity.class));
-            }
-        });
 
         return binding.getRoot();
     }

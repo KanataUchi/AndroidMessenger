@@ -6,10 +6,18 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context=".bottomnav.new_chat.NewChatFragment">
 
+    <EditText
+        android:id="@+id/search_users_et"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:hint="@string/search"
+        android:background="@android:color/white"
+        tools:ignore="MissingConstraints" />
+
     <androidx.recyclerview.widget.RecyclerView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/search_users_et"
         app:layout_constraintStart_toStartOf="parent"
         android:id="@+id/users_rv"/>
     

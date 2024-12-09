@@ -94,7 +94,32 @@ public class ChatActivity extends AppCompatActivity {
                 startActivity(new Intent(getBaseContext(), MainActivity.class));
             }
         });
+
+        binding.getRoot().getViewTreeObserver().addOnGlobalLayoutListener(() -> {
+            int heightDiff = binding.getRoot().getRootView().getHeight() - binding.getRoot().getHeight();
+            if (heightDiff > dpToPx(200)) {
+                scrollToLastMessage();
+            }
+        });
+
     }
+
+    private int dpToPx(int dp) {
+        return (int) (dp * getResources().getDisplayMetrics().density);
+    }
+
+
+    private void scrollToLastMessage() {
+        binding.massagesRv.post(() -> {
+            if (binding.massagesRv.getAdapter() != null) {
+                int itemCount = binding.massagesRv.getAdapter().getItemCount();
+                if (itemCount > 0) {
+                    binding.massagesRv.smoothScrollToPosition(itemCount - 1);
+                }
+            }
+        });
+    }
+
 
     private void sendMessage(String chatId, String message, String data){
 
@@ -108,21 +133,17 @@ public class ChatActivity extends AppCompatActivity {
         messageInfo.put("data", data);
 
         FirebaseDatabase.getInstance().getReference().child("Chats").child(chatId)
-                .child("messages").push().setValue(messageInfo);
-
-        NotificationChannel notificationChannel = null;
-        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
-            notificationChannel = new NotificationChannel(
-                    "NotificationChannel",
-                    "send",
-                    NotificationManager.IMPORTANCE_DEFAULT);
-            NotificationManager notificationManager = getSystemService(NotificationManager.class);
-            notificationManager.createNotificationChannel(notificationChannel);
-
-            Notification notification = new NotificationCompat.Builder(this, "NotificationChannel")
-                    .setContentText(message)
-                    .build();
-        }
+                .child("messages").push().setValue(messageInfo)
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        binding.massagesRv.post(() -> {
+                            int itemCount = Objects.requireNonNull(binding.massagesRv.getAdapter()).getItemCount();
+                            if (itemCount > 0) {
+                                binding.massagesRv.scrollToPosition(itemCount - 1);
+                            }
+                        });
+                    }
+                });
 
     }
 
@@ -149,6 +170,10 @@ public class ChatActivity extends AppCompatActivity {
 
                         binding.massagesRv.setLayoutManager(new LinearLayoutManager(getBaseContext()));
                         binding.massagesRv.setAdapter(new MessagesAdapter(messages));
+
+                        if (!messages.isEmpty()) {
+                            binding.massagesRv.scrollToPosition(messages.size() - 1);
+                        }
                     }
 
                     @Override

@@ -18,4 +18,5 @@
     <string name="light_theme">light theme</string>
     <string name="dark_theme">dark theme</string>
     <string name="add">Add</string>
+    <string name="search">search user</string>
 </resources>

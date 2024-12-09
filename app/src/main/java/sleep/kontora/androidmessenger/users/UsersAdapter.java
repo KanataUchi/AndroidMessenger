@@ -1,5 +1,6 @@
 package sleep.kontora.androidmessenger.users;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -80,6 +81,12 @@ public class UsersAdapter extends RecyclerView.Adapter<UserViewHolder> {
     @Override
     public int getItemCount() {
         return users.size();
+    }
+
+    @SuppressLint("NotifyDataSetChanged")
+    public void updateUsers(ArrayList<User> newUsers) {
+        this.users = newUsers;
+        notifyDataSetChanged();
     }
 
 }

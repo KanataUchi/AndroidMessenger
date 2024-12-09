@@ -9,7 +9,7 @@ public class Message {
         this.text = text;
         this.data = data;
     }
-    //gh
+
 
     public String getId() {
         return id;

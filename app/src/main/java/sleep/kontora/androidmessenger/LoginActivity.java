@@ -15,6 +15,7 @@ import androidx.core.view.WindowInsetsCompat;
 
 import com.google.android.gms.tasks.OnCanceledListener;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
@@ -22,6 +23,8 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+
+import java.util.Objects;
 
 import sleep.kontora.androidmessenger.databinding.ActivityLoginBinding;
 
@@ -36,42 +39,34 @@ public class LoginActivity extends AppCompatActivity {
         setContentView(binding.getRoot());
 
         binding.loginBtn.setOnClickListener(new View.OnClickListener() {
-            boolean error = false;
             @Override
             public void onClick(View v) {
-                FirebaseDatabase.getInstance().getReference().child("Users")
-                        .addListenerForSingleValueEvent(new ValueEventListener() {
+                String email = binding.emailEt.getText().toString().trim();
+                String password = binding.passwordEt.getText().toString().trim();
+
+                if (email.isEmpty() || password.isEmpty()) {
+                    Toast.makeText(getApplicationContext(), "Fields cannot be empty", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
+                FirebaseAuth.getInstance().signInWithEmailAndPassword(email, password)
+                        .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                             @Override
-                            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                                for (DataSnapshot userSnapshot : snapshot.getChildren()) {
-                                    if (!binding.emailEt.getText().toString().equals(snapshot.child("email").toString())
-                                            || !binding.passwordEt.getText().toString().equals(snapshot.child("password").toString())) {
-                                        error = true;
-                                    }
+                            public void onComplete(@NonNull Task<AuthResult> task) {
+                                if (task.isSuccessful()) {
+                                    // Успешный вход
+                                    Toast.makeText(LoginActivity.this, "Login successful", Toast.LENGTH_SHORT).show();
+                                    startActivity(new Intent(LoginActivity.this, MainActivity.class));
+                                    finish();
                                 }
                             }
-
+                        })
+                        .addOnFailureListener(new OnFailureListener() {
                             @Override
-                            public void onCancelled(@NonNull DatabaseError error) {
+                            public void onFailure(@NonNull Exception e) {
+                                handleAuthError(e.getMessage());
                             }
                         });
-                if(binding.emailEt.getText().toString().isEmpty() || binding.passwordEt.getText().toString().isEmpty()){
-                    Toast.makeText(getApplicationContext(), "fields cannot be empty", Toast.LENGTH_SHORT).show();
-                }
-                else if(error){
-                    Toast.makeText(getApplicationContext(), "uncorrect input", Toast.LENGTH_SHORT).show();
-                }
-                else{
-                    FirebaseAuth.getInstance().signInWithEmailAndPassword(binding.emailEt.getText().toString(), binding.passwordEt.getText().toString())
-                            .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-                                @Override
-                                public void onComplete(@NonNull Task<AuthResult> task) {
-                                    if(task.isComplete()){
-                                        startActivity(new Intent(LoginActivity.this, MainActivity.class));
-                                    }
-                                }
-                            });
-                }
             }
         });
 
@@ -81,5 +76,17 @@ public class LoginActivity extends AppCompatActivity {
                 startActivity(new Intent(LoginActivity.this, RegistrActivity.class));
             }
         });
+    }
+
+    private void handleAuthError(String errorMessage) {
+        if (errorMessage.contains("The email address is badly formatted")) {
+            Toast.makeText(this, "uncorrect email", Toast.LENGTH_SHORT).show();
+        } else if (errorMessage.contains("There is no user record corresponding to this identifier")) {
+            Toast.makeText(this, "uncorrect email", Toast.LENGTH_SHORT).show();
+        } else if (errorMessage.contains("The password is invalid")) {
+            Toast.makeText(this, "uncorrect password", Toast.LENGTH_SHORT).show();
+        } else {
+            Toast.makeText(this, "error auth: " + errorMessage, Toast.LENGTH_SHORT).show();
+        }
     }
 }
